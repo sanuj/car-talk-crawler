@@ -27,7 +27,7 @@ public class App {
     public static final String DOMAIN = "https://community.cartalk.com";
 
     public static void main(String[] args) throws IOException {
-        //Give the absolute path to chromedriver
+        //Give the absolute path to chrome driver
         System.setProperty("webdriver.chrome.driver", "chromedriver");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -79,8 +79,11 @@ public class App {
             driver.get(link);
             waitToLoadHeader(driver);
 
+
             String src = driver.getPageSource(), newSrc = "";
+            Set<String> sources = Sets.newHashSet();
             while (!newSrc.equals(src)) {
+                sources.add(src);
                 js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
                 waitForLoad(driver);
                 src = newSrc;
@@ -124,7 +127,10 @@ public class App {
                 e.printStackTrace();
                 res += " ,";
             }
-            addPosts(writer, res, src);
+            Set<String> st = Sets.newHashSet();
+            for(String s : sources) {
+                addPosts(writer, res, s, st);
+            }
 
         } catch (Exception e) {
             System.out.println("Exception 5");
@@ -133,11 +139,9 @@ public class App {
     }
 
     //Process each post
-    public static void addPosts(BufferedWriter writer, String curr, String src) {
-        Set<String> st = Sets.newHashSet();
+    public static void addPosts(BufferedWriter writer, String curr, String src, Set<String> st) {
         // TODO Auto-generated method stub
         try {
-
             // Converting unordered / ordered lists to paragraphs so they can be collected below.
             src = src.replace("<li>", "<p>").replace("<\\li>", "<\\p>");
 
