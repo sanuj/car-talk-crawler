@@ -158,7 +158,7 @@ public class App {
                     Element username = ele.getElementsByClass("username").get(0);
                     res += username.text() + ",";
                     Elements quotes = ele.select("blockquote > p");
-                    Elements paras = ele.select("p");
+                    Elements paras = ele.getElementsByClass("cooked");//ele.select("p");
                     String content = "";
                     for (Element para : paras) {
                         if (quotes.contains(para)) {
