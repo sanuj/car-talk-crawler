@@ -158,7 +158,7 @@ public class App {
                     Element username = ele.getElementsByClass("username").get(0);
                     res += username.text() + ",";
                     Elements quotes = ele.select("blockquote > p");
-                    Elements paras = ele.getElementsByClass("cooked");
+                    Elements paras = ele.select("p");
                     String content = "";
                     for (Element para : paras) {
                         if (quotes.contains(para)) {
@@ -168,6 +168,15 @@ public class App {
                         }
 
                     }
+                    
+                    if(content.length() == 0)
+                    {
+                    	Elements cooked = ele.getElementsByClass("cooked");
+                    	for (Element para : cooked) {
+                    		content += para.text();
+                    	}
+                    }
+                    
                     content = content.replaceAll("\\,", " ");
                     content = content.replaceAll("\"", "\\\"");
                     res += content;
@@ -177,7 +186,7 @@ public class App {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Exception 6 ");
+            System.out.println("Exception 6");
             e.printStackTrace();
         }
     }
